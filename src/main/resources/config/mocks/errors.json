@@ -1,0 +1,16 @@
+[
+  {
+    "statusCode": 502,
+    "systemCode": "MOCKS",
+    "code": "PROCESS_ERROR",
+    "title": "Ошибка обработки запроса",
+    "message": "Обратитсь к разработке"
+  },
+  {
+    "statusCode": 404,
+    "systemCode": "STORAGE",
+    "code": "NOT_FOUND",
+    "title": "Запрашиваемый файл не найден",
+    "message": "Возможно он утерян, либо ошибка в идентификаторе"
+  }
+]
