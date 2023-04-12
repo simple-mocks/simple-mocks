@@ -27,6 +27,7 @@ dependencies {
     implementation 'com.h2database:h2'
     implementation "org.flywaydb:flyway-core:${lib_flyway_core}"
 
+    implementation project(path: ':common-api')
     implementation project(path: ':error-service-api')
     implementation project(path: ':error-service-local')
     implementation project(path: ':storage-service-api')

@@ -1,9 +1,10 @@
 package com.github.sibmaks.storage_service.local.controller;
 
-import com.github.sibmaks.storage_service.api.Content;
+import com.github.sibmaks.storage_service.local.api.dto.ContentDto;
 import com.github.sibmaks.storage_service.local.api.rq.CreateContentRq;
 import com.github.sibmaks.storage_service.local.api.rq.GetContentRq;
 import com.github.sibmaks.storage_service.local.api.rs.CreateContentRs;
+import com.github.sibmaks.storage_service.local.api.rs.GetContentRs;
 import com.github.sibmaks.storage_service.local.conf.LocalStorageServiceEnabled;
 import com.github.sibmaks.storage_service.local.service.LocalStorageService;
 import lombok.RequiredArgsConstructor;
@@ -44,8 +45,16 @@ public class StorageController {
     @PostMapping(value = "/get",
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Content get(@RequestBody GetContentRq rq) {
-        return localStorageService.get(rq.getId());
+    public @ResponseBody GetContentRs get(@RequestBody GetContentRq rq) {
+        var content = localStorageService.get(rq.getId());
+        var dto = ContentDto.builder()
+                .id(content.getId())
+                .meta(content.getMeta())
+                .content(Base64.getEncoder().encodeToString(content.getContent()))
+                .createdAt(content.getCreatedAt())
+                .modifiedAt(content.getModifiedAt())
+                .build();
+        return new GetContentRs(dto);
     }
 
 

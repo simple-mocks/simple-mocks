@@ -14,6 +14,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.HostAccess;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ import java.util.Map;
  * @author sibmaks
  * @since 2023-04-11
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class JavaScriptRequestHandler implements RequestHandler {
@@ -52,7 +54,7 @@ public class JavaScriptRequestHandler implements RequestHandler {
 
         var lm = LocalMocksContext.builder()
                 .request(new JsRequest(path, rq))
-                .response(new JsResponse(rs))
+                .response(new JsResponse(objectMapper, rs))
                 .sessions(new JsSessions(sessionService))
                 .build();
 
@@ -61,7 +63,11 @@ public class JavaScriptRequestHandler implements RequestHandler {
                 .build()) {
             js.getBindings("js").putMember("lm", lm);
             var script = new String(content.getContent(), StandardCharsets.UTF_8);
-            js.eval("js", script);
+            try {
+                js.eval("js", script);
+            } catch (Exception e) {
+                log.error("Template execution exception", e);
+            }
         }
     }
 

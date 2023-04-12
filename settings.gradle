@@ -1,5 +1,6 @@
 rootProject.name = 'local_mocks'
 
+include 'common-api'
 include 'error-service-api'
 include 'error-service-local'
 include 'storage-service-api'

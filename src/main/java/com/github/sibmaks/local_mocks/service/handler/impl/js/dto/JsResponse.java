@@ -16,7 +16,7 @@ import java.nio.charset.StandardCharsets;
  */
 @AllArgsConstructor
 public class JsResponse {
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private final ObjectMapper objectMapper;
 
     private final HttpServletResponse rs;
 
@@ -71,7 +71,7 @@ public class JsResponse {
         ServletOutputStream outputStream;
         try {
             outputStream = rs.getOutputStream();
-            OBJECT_MAPPER.writeValue(outputStream, json);
+            objectMapper.writeValue(outputStream, json);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
