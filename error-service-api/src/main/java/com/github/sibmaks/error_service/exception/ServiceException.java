@@ -1,9 +1,11 @@
 package com.github.sibmaks.error_service.exception;
 
-import com.github.sibmaks.error_service.ServiceError;
 import lombok.Getter;
 
 /**
+ * Common service exception.<br/>
+ * Should be thrown when something wrong happened in logically usage of APIs
+ *
  * @author sibmaks
  * @since 2023-04-11
  */

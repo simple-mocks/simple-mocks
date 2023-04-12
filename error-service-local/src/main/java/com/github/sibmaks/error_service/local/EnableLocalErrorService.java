@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Import;
 import java.lang.annotation.*;
 
 /**
+ * Enabler for local error service implementation
+ *
  * @author sibmaks
  * @since 2023-04-11
  */
@@ -14,5 +16,11 @@ import java.lang.annotation.*;
 @Documented
 @Import(LocalErrorServiceConfig.class)
 public @interface EnableLocalErrorService {
+    /**
+     * Resource path of error descriptions.<br/>
+     * Example: "classpath:/config/mocks/errors.json"
+     *
+     * @return resource path
+     */
     String value();
 }

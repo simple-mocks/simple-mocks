@@ -1,6 +1,6 @@
 package com.github.sibmaks.session_service.api;
 
-import com.github.sibmaks.error_service.ServiceError;
+import com.github.sibmaks.error_service.exception.ServiceError;
 import lombok.AllArgsConstructor;
 
 /**
