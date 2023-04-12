@@ -15,4 +15,6 @@ public class LocalMocksContext {
     public final JsRequest request;
     @HostAccess.Export
     public final JsResponse response;
+    @HostAccess.Export
+    public final JsSessions sessions;
 }

@@ -1,4 +1,4 @@
-package com.github.sibmaks.storage_service.local.api.rs;
+package com.github.sibmaks.local_mocks.api.rs;
 
 import lombok.*;
 

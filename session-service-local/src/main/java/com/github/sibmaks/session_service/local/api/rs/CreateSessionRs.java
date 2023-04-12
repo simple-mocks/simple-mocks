@@ -1,5 +1,6 @@
-package com.github.sibmaks.storage_service.local.api.rq;
+package com.github.sibmaks.session_service.local.api.rs;
 
+import com.github.sibmaks.session_service.api.Session;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,6 @@ import java.io.Serializable;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetContentRq implements Serializable {
-    private String id;
+public class CreateSessionRs implements Serializable {
+    private Session session;
 }

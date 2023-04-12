@@ -2,7 +2,7 @@ package com.github.sibmaks.local_mocks.handler;
 
 import com.github.sibmaks.error_service.ErrorService;
 import com.github.sibmaks.error_service.exception.ServiceException;
-import com.github.sibmaks.storage_service.local.api.rs.ErrorRs;
+import com.github.sibmaks.local_mocks.api.rs.ErrorRs;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

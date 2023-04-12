@@ -6,8 +6,10 @@ import com.github.sibmaks.local_mocks.entity.HttpMockEntity;
 import com.github.sibmaks.local_mocks.service.handler.RequestHandler;
 import com.github.sibmaks.local_mocks.service.handler.impl.js.dto.JsRequest;
 import com.github.sibmaks.local_mocks.service.handler.impl.js.dto.JsResponse;
+import com.github.sibmaks.local_mocks.service.handler.impl.js.dto.JsSessions;
 import com.github.sibmaks.local_mocks.service.handler.impl.js.dto.LocalMocksContext;
 import com.github.sibmaks.local_mocks.service.storage.StorageFacadeService;
+import com.github.sibmaks.session_service.SessionService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +30,7 @@ import java.util.Map;
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class JavaScriptRequestHandler implements RequestHandler {
     private final StorageFacadeService storageFacadeService;
+    private final SessionService sessionService;
     private final ObjectMapper objectMapper;
 
     @Override
@@ -50,6 +53,7 @@ public class JavaScriptRequestHandler implements RequestHandler {
         var lm = LocalMocksContext.builder()
                 .request(new JsRequest(path, rq))
                 .response(new JsResponse(rs))
+                .sessions(new JsSessions(sessionService))
                 .build();
 
         try(var js = Context.newBuilder("js")

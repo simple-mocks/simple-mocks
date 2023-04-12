@@ -1,0 +1,13 @@
+{
+  "readonlySections": [
+    "COMMON", "USER", "SERVICE"
+  ],
+  "systemConfigs": [
+    {
+      "systemCode": "MOCKS",
+      "sharedSections": [
+        "COMMON"
+      ]
+    }
+  ]
+}
