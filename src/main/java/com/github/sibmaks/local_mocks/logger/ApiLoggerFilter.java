@@ -34,36 +34,30 @@ public class ApiLoggerFilter extends HttpFilter {
         var requestURI = request.getRequestURI();
 
         var requestWrapper = new ContentCachingRequestWrapper(request);
-        var rqBody = getRqBody(requestWrapper);
-
         var responseWrapper = new ContentCachingResponseWrapper(response);
 
         var startTime = System.currentTimeMillis();
         try {
-            var contentType = requestWrapper.getContentType();
-            log.info("""
-                    [INCOMING-RQ]
-                    RqUID: '{}'
-                    Method: '{}'
-                    Uri: '{}'
-                    Content-Type: '{}'
-                    Rq: '{}'""", rqUID, method, requestURI, contentType, rqBody);
             chain.doFilter(requestWrapper, responseWrapper);
         } finally {
             var timing = System.currentTimeMillis() - startTime;
             var status = responseWrapper.getStatus();
-            var contentType = responseWrapper.getContentType();
+            var rqType = requestWrapper.getContentType();
+            var rqBody = getRqBody(requestWrapper);
+            var rsType = responseWrapper.getContentType();
             var rsBody = getRsBody(responseWrapper);
             responseWrapper.copyBodyToResponse();
             log.info("""
-                    [INCOMING-RS]
+                    [INCOMING]
                     RqUID: '{}'
                     Method: '{}'
                     Uri: '{}'
                     Timing: '{} ms'
                     Status: '{}'
-                    Content-Type: '{}'
-                    Rs: '{}'""", rqUID, method, requestURI, timing, status, contentType, rsBody);
+                    Rq-Content-Type: '{}'
+                    Rq: '{}'
+                    Rs-Content-Type: '{}'
+                    Rs: '{}'""", rqUID, method, requestURI, timing, status, rqType, rqBody, rsType, rsBody);
         }
     }
 

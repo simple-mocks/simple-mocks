@@ -13,6 +13,7 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "HTTP_MOCK")
