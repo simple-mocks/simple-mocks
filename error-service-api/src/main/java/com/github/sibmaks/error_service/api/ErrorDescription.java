@@ -18,7 +18,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ErrorDescription implements Serializable {
-    private int statusCode;
     private String systemCode;
     private String code;
     private String title;

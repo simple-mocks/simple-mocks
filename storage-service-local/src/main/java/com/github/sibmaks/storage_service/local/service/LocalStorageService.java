@@ -63,7 +63,7 @@ public class LocalStorageService implements StorageService {
         try (var channel = FileChannel.open(path, StandardOpenOption.READ)) {
             return LocalContent.read(objectMapper, channel);
         } catch (NoSuchFileException e) {
-            throw new ServiceException(StorageErrors.NOT_FOUND, "File not found", e);
+            throw new ServiceException(404, StorageErrors.NOT_FOUND, "File not found", e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

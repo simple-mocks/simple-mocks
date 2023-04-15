@@ -23,12 +23,14 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    implementation project(path: ':common-api')
     implementation project(path: ':error-service-api')
     implementation project(path: ':session-service-api')
 
     compileOnly 'org.projectlombok:lombok'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework:spring-context-support'
 
     annotationProcessor 'org.projectlombok:lombok'
 

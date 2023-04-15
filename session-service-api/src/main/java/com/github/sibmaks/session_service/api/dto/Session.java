@@ -1,4 +1,4 @@
-package com.github.sibmaks.session_service.api;
+package com.github.sibmaks.session_service.api.dto;
 
 import java.util.Set;
 

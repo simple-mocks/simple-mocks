@@ -1,7 +1,7 @@
 package com.github.sibmaks.local_mocks.service.handler.impl.js.dto;
 
 import com.github.sibmaks.session_service.SessionService;
-import com.github.sibmaks.session_service.api.Session;
+import com.github.sibmaks.session_service.api.dto.Session;
 import lombok.AllArgsConstructor;
 import org.graalvm.polyglot.HostAccess;
 

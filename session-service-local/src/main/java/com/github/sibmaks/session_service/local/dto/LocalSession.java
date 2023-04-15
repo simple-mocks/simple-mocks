@@ -1,7 +1,7 @@
 package com.github.sibmaks.session_service.local.dto;
 
-import com.github.sibmaks.session_service.api.Session;
-import com.github.sibmaks.session_service.api.SessionOwnerType;
+import com.github.sibmaks.session_service.api.dto.Session;
+import com.github.sibmaks.session_service.api.dto.SessionOwnerType;
 import lombok.*;
 
 import java.io.Serializable;

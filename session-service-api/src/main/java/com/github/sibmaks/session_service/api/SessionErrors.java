@@ -10,7 +10,8 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public enum SessionErrors implements ServiceError {
     NOT_EXISTS,
-    READONLY;
+    READONLY,
+    ALREADY_EXISTS;
 
 
     @Override

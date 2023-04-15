@@ -1,13 +1,11 @@
 package com.github.sibmaks.session_service.local.api.rq;
 
-import com.github.sibmaks.session_service.api.dto.SessionOwnerType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,9 +16,7 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CreateSessionRq implements Serializable {
+public class SetSessionRq implements Serializable {
+    private String sessionId;
     private Map<String, Map<String, Serializable>> sections;
-    private SessionOwnerType ownerType;
-    private String ownerId;
-    private List<String> permissions;
 }

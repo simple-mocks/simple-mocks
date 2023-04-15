@@ -34,24 +34,29 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ServiceException.class)
     public @ResponseBody StandardRs<?> handleServiceException(ServiceException e, HttpServletResponse response) {
         log.error("Service exception happened", e);
+        var status = e.getStatus();
         var serviceError = e.getServiceError();
         var systemCode = serviceError.getSystemCode();
         var errorCode = serviceError.getErrorCode();
-        return handleException(systemCode, errorCode, response);
+        return handleException(status, systemCode, errorCode, response);
     }
 
     @ExceptionHandler(Exception.class)
     public @ResponseBody StandardRs<?> handleException(Exception e, HttpServletResponse response) {
         log.error("Exception happened", e);
-        return handleException(systemCode, defaultCode, response);
+        return handleException(502, systemCode, defaultCode, response);
     }
 
-    private StandardRs<? extends Serializable> handleException(String systemCode,
+    private StandardRs<? extends Serializable> handleException(int statusCode,
+                                                               String systemCode,
                                                                String errorCode,
                                                                HttpServletResponse response) {
         try {
             var description = errorService.getDescription(systemCode, errorCode);
-            int statusCode = description.getStatusCode();
+            if(description == null) {
+                log.warn("No description for error {}#{}", systemCode, errorCode);
+                return getDefaultErrorRs(response);
+            }
             response.setStatus(statusCode);
             var errorDto = ErrorDto.builder()
                     .system(description.getSystemCode())

@@ -1,9 +1,12 @@
 package com.github.sibmaks.session_service;
 
 
-import com.github.sibmaks.session_service.api.Session;
+import com.github.sibmaks.session_service.api.dto.Session;
+import com.github.sibmaks.session_service.api.dto.action.Action;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @author sibmaks
@@ -19,6 +22,15 @@ public interface SessionService {
      * @return session or null
      */
     Session get(String sessionId);
+
+    /**
+     * Get attribute names from session
+     *
+     * @param sessionId session id
+     * @param section section in session
+     * @return attribute names
+     */
+    Set<String> getAttributeNames(String sessionId, String section);
 
     /**
      * Get attribute from session
@@ -50,4 +62,13 @@ public interface SessionService {
      * @param attribute attribute code
      */
     void removeAttribute(String sessionId, String section, String attribute);
+
+    /**
+     * Update session by applying passed actions.<br/>
+     * Method should apply actions transitionally, in case if some action can't be applied all other action shouldn't be applied.
+     *
+     * @param sessionId session id
+     * @param actions actions
+     */
+    void update(String sessionId, List<? extends Action> actions);
 }
