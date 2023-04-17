@@ -20,6 +20,7 @@ import java.util.Date;
 public class HttpMockEntity {
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "method", nullable = false)
     private String method;

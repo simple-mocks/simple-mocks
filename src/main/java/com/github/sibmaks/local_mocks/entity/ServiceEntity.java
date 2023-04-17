@@ -1,9 +1,6 @@
 package com.github.sibmaks.local_mocks.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
@@ -23,6 +20,7 @@ import java.util.Date;
 public class ServiceEntity {
     @Id
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     @Column(name = "code", nullable = false, unique = true)
     private String code;
