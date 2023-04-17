@@ -13,4 +13,6 @@ public interface HttpMockEntityRepository extends JpaRepository<HttpMockEntity, 
 
     List<HttpMockEntity> findAllByMethodAndServiceCode(String method, String serviceCode);
 
+    List<HttpMockEntity> findAllByServiceId(long serviceId);
+
 }

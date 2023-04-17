@@ -1,7 +1,9 @@
 package com.github.sibmaks.local_mocks.service;
 
 import com.github.sibmaks.local_mocks.api.dto.MockDto;
+import com.github.sibmaks.local_mocks.api.dto.ServiceDto;
 import com.github.sibmaks.local_mocks.entity.HttpMockEntity;
+import com.github.sibmaks.local_mocks.entity.ServiceEntity;
 import com.github.sibmaks.local_mocks.repository.HttpMockEntityRepository;
 import com.github.sibmaks.local_mocks.repository.ServiceEntityRepository;
 import com.github.sibmaks.local_mocks.service.handler.RequestHandler;
@@ -10,10 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import java.util.stream.Collectors;
@@ -111,5 +110,20 @@ public class MockService {
                 .orElseThrow(() -> new IllegalArgumentException("Mock %s not found".formatted(mockId)));
         var content = storageFacadeService.get(httpMockEntity.getStorageType(), httpMockEntity.getStorageId());
         return new MockDto(httpMockEntity, content);
+    }
+
+    public ServiceEntity createService(String code) {
+        var serviceEntity = ServiceEntity.builder()
+                .code(code)
+                .createdAt(new Date())
+                .build();
+        return serviceEntityRepository.save(serviceEntity);
+    }
+
+    public ServiceDto getService(long serviceId) {
+        var serviceEntity = serviceEntityRepository.findById(serviceId)
+                .orElseThrow(() -> new IllegalArgumentException("Service %s not found".formatted(serviceId)));
+        List<HttpMockEntity> httpMockEntities = httpMockEntityRepository.findAllByServiceId(serviceId);
+        return new ServiceDto(serviceEntity, httpMockEntities);
     }
 }
