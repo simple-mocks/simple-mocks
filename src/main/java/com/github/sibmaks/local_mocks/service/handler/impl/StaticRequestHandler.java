@@ -1,6 +1,5 @@
 package com.github.sibmaks.local_mocks.service.handler.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.sibmaks.local_mocks.entity.HttpMockEntity;
 import com.github.sibmaks.local_mocks.service.handler.RequestHandler;
@@ -9,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +18,7 @@ import java.util.Map;
  * @author sibmaks
  * @since 2023-04-11
  */
+@Slf4j
 @Component
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class StaticRequestHandler implements RequestHandler {
@@ -44,11 +45,17 @@ public class StaticRequestHandler implements RequestHandler {
         outputStream.write(content.getContent());
     }
 
-    private void fillHeaders(HttpServletResponse rs, Map<String, String> meta) throws JsonProcessingException {
+    private void fillHeaders(HttpServletResponse rs, Map<String, String> meta) {
         String headersJson = meta.get("HTTP_HEADERS");
-        Map<String, String> headers = objectMapper.readValue(headersJson, Map.class);
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
-            rs.setHeader(entry.getKey(), entry.getValue());
+        if(headersJson != null && !headersJson.isBlank()) {
+            try {
+                Map<String, String> headers = objectMapper.readValue(headersJson, Map.class);
+                for (Map.Entry<String, String> entry : headers.entrySet()) {
+                    rs.setHeader(entry.getKey(), entry.getValue());
+                }
+            } catch (Exception e) {
+                log.error("Can't set all http headers", e);
+            }
         }
 
         var statusCode = meta.get("STATUS_CODE");

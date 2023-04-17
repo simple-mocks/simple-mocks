@@ -71,6 +71,7 @@ public class MockService {
                 .type(type)
                 .storageType(storageCode)
                 .storageId(contentId)
+                .createdAt(new Date())
                 .build();
         return httpMockEntityRepository.save(httpMockEntity);
     }
