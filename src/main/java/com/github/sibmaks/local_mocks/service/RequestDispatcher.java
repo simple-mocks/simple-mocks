@@ -42,6 +42,7 @@ public class RequestDispatcher {
                 return;
             }
         }
+        throw new IllegalArgumentException("Handler for %s %s %s not found".formatted(method, serviceCode, path));
     }
 
 }
