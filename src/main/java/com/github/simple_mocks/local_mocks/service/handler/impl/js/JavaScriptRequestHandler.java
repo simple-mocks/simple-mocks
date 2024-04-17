@@ -7,7 +7,7 @@ import com.github.simple_mocks.local_mocks.service.handler.RequestHandler;
 import com.github.simple_mocks.local_mocks.service.handler.impl.js.dto.JsRequest;
 import com.github.simple_mocks.local_mocks.service.handler.impl.js.dto.JsResponse;
 import com.github.simple_mocks.local_mocks.service.handler.impl.js.dto.JsSessions;
-import com.github.simple_mocks.local_mocks.service.handler.impl.js.dto.LocalMocksContext;
+import com.github.simple_mocks.local_mocks.service.handler.impl.js.dto.SimleMocksContext;
 import com.github.simple_mocks.session.api.SessionService;
 import com.github.simple_mocks.storage.api.StorageService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.graalvm.polyglot.Context;
 import org.graalvm.polyglot.HostAccess;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -26,7 +27,7 @@ import java.util.Map;
  * @since 0.0.1
  */
 @Slf4j
-//@Component
+@Component
 public class JavaScriptRequestHandler implements RequestHandler {
     private final StorageService storageService;
     private final SessionService sessionService;
@@ -57,7 +58,7 @@ public class JavaScriptRequestHandler implements RequestHandler {
         var meta = content.getMeta();
         fillHeaders(rs, meta);
 
-        var lm = LocalMocksContext.builder()
+        var simpleMocks = SimleMocksContext.builder()
                 .request(new JsRequest(path, rq))
                 .response(new JsResponse(objectMapper, rs))
                 .sessions(new JsSessions(sessionService))
@@ -66,7 +67,7 @@ public class JavaScriptRequestHandler implements RequestHandler {
         try (var js = Context.newBuilder("js")
                 .allowHostAccess(HostAccess.ALL)
                 .build()) {
-            js.getBindings("js").putMember("lm", lm);
+            js.getBindings("js").putMember("sm", simpleMocks);
             var script = new String(content.getContent(), StandardCharsets.UTF_8);
             try {
                 js.eval("js", script);
@@ -78,14 +79,17 @@ public class JavaScriptRequestHandler implements RequestHandler {
 
     private void fillHeaders(HttpServletResponse rs, Map<String, String> meta) throws JsonProcessingException {
         var headersJson = meta.get("HTTP_HEADERS");
+        if (headersJson == null) {
+            return;
+        }
         Map<String, String> headers = objectMapper.readValue(headersJson, Map.class);
-        for (Map.Entry<String, String> entry : headers.entrySet()) {
+        for (var entry : headers.entrySet()) {
             rs.setHeader(entry.getKey(), entry.getValue());
         }
 
         var statusCode = meta.get("STATUS_CODE");
         if (statusCode != null) {
-            int status = Integer.parseInt(statusCode);
+            var status = Integer.parseInt(statusCode);
             rs.setStatus(status);
         }
     }

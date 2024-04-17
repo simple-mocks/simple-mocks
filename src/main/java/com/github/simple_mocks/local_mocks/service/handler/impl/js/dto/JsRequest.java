@@ -1,15 +1,21 @@
 package com.github.simple_mocks.local_mocks.service.handler.impl.js.dto;
 
+import com.github.simple_mocks.error_service.exception.ServiceException;
+import com.github.simple_mocks.local_mocks.api.MocksErrors;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import org.graalvm.polyglot.HostAccess;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * @author sibmaks
@@ -23,13 +29,15 @@ public class JsRequest {
     @HostAccess.Export
     public final Map<String, String> headers;
     private final CompletableFuture<byte[]> contentFuture;
+    private final Map<String, Cookie> cookies;
 
     public JsRequest(String path, HttpServletRequest rq) {
         this.method = rq.getMethod();
         this.path = path;
-        var headers = getHeaders(rq);
-        this.headers = Collections.unmodifiableMap(headers);
+        this.headers = Collections.unmodifiableMap(getHeaders(rq));
         this.contentFuture = getContentFuture(rq);
+        this.cookies = Arrays.stream(rq.getCookies())
+                .collect(Collectors.toMap(Cookie::getName, Function.identity()));
     }
 
     private static CompletableFuture<byte[]> getContentFuture(HttpServletRequest rq) {
@@ -38,7 +46,7 @@ public class JsRequest {
                 var inputStream = rq.getInputStream();
                 return inputStream.readAllBytes();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                throw new ServiceException(MocksErrors.UNEXPECTED_ERROR, "Can't read rq content", e);
             }
         });
     }
@@ -62,6 +70,11 @@ public class JsRequest {
     @HostAccess.Export
     public String text() throws ExecutionException, InterruptedException {
         return new String(contentFuture.get(), StandardCharsets.UTF_8);
+    }
+
+    @HostAccess.Export
+    public Cookie cookie(String key) {
+        return cookies.get(key);
     }
 
 }

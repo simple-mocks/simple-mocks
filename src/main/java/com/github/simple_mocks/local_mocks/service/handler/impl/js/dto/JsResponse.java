@@ -1,7 +1,10 @@
 package com.github.simple_mocks.local_mocks.service.handler.impl.js.dto;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.simple_mocks.error_service.exception.ServiceException;
+import com.github.simple_mocks.local_mocks.api.MocksErrors;
 import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.graalvm.polyglot.HostAccess;
@@ -37,7 +40,7 @@ public class JsResponse {
             outputStream = rs.getOutputStream();
             outputStream.write(body.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ServiceException(MocksErrors.UNEXPECTED_ERROR, "Can't write to response", e);
         }
     }
 
@@ -55,7 +58,7 @@ public class JsResponse {
             outputStream = rs.getOutputStream();
             outputStream.write(bytes);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ServiceException(MocksErrors.UNEXPECTED_ERROR, "Can't write to response", e);
         }
     }
 
@@ -68,12 +71,11 @@ public class JsResponse {
 
     @HostAccess.Export
     public void json(Object json) {
-        ServletOutputStream outputStream;
         try {
-            outputStream = rs.getOutputStream();
+            var outputStream = rs.getOutputStream();
             objectMapper.writeValue(outputStream, json);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new ServiceException(MocksErrors.UNEXPECTED_ERROR, "Can't write to response", e);
         }
     }
 
@@ -84,4 +86,16 @@ public class JsResponse {
         json(json);
     }
 
+    @HostAccess.Export
+    public void cookie(String name, String value) {
+        cookie(name, value, false, true);
+    }
+
+    @HostAccess.Export
+    public void cookie(String name, String value, boolean secure, boolean httpOnly) {
+        var cookie = new Cookie(name, value);
+        cookie.setSecure(secure);
+        cookie.setHttpOnly(httpOnly);
+        rs.addCookie(cookie);
+    }
 }

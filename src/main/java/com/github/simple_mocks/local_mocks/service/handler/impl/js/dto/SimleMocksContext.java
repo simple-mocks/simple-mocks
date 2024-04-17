@@ -10,7 +10,7 @@ import org.graalvm.polyglot.HostAccess;
  */
 @Builder
 @AllArgsConstructor
-public class LocalMocksContext {
+public class SimleMocksContext {
     @HostAccess.Export
     public final JsRequest request;
     @HostAccess.Export

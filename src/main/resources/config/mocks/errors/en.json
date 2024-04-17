@@ -1,20 +1,20 @@
 [
   {
-    "systemCode": "MOCKS",
-    "code": "PROCESS_ERROR",
-    "title": "Ошибка обработки запроса",
-    "message": "Обратитесь к разработке"
+    "systemCode": "SIMPLE_MOCKS",
+    "code": "UNEXPECTED_ERROR",
+    "title": "Unexpected error",
+    "message": "Contact support"
   },
   {
     "systemCode": "STORAGE",
     "code": "NOT_FOUND",
-    "title": "Запрашиваемый файл не найден",
-    "message": "Возможно он утерян, либо ошибка в идентификаторе"
+    "title": "Requested file not found",
+    "message": "Possible file is lost or identifier is incorrect"
   },
   {
     "systemCode": "SESSION",
     "code": "NOT_EXISTS",
-    "title": "Сессия не найдена",
-    "message": "Сессия не найдена"
+    "title": "Session not found",
+    "message": "Session not found"
   }
 ]
