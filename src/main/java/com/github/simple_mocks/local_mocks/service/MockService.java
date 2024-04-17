@@ -8,6 +8,7 @@ import com.github.simple_mocks.local_mocks.repository.HttpMockEntityRepository;
 import com.github.simple_mocks.local_mocks.repository.ServiceEntityRepository;
 import com.github.simple_mocks.local_mocks.service.handler.RequestHandler;
 import com.github.simple_mocks.storage.api.StorageService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
  * @author sibmaks
  * @since 0.0.1
  */
+@Slf4j
 @Service
 public class MockService {
     private final Set<String> mockTypes;
@@ -73,7 +75,7 @@ public class MockService {
         return httpMockEntityRepository.save(httpMockEntity);
     }
 
-    @Transactional
+    @Transactional(isolation = Isolation.READ_COMMITTED)
     public HttpMockEntity update(long mockId,
                                  String method,
                                  String pathRegex,
@@ -91,7 +93,8 @@ public class MockService {
         var httpMockEntity = httpMockEntityRepository.findById(mockId)
                 .orElseThrow(() -> new IllegalArgumentException("Mock %s not found".formatted(mockId)));
         meta = meta == null ? Collections.emptyMap() : meta;
-        var contentName = "%s-%s".formatted(meta, type);
+        var serviceEntity = httpMockEntity.getService();
+        var contentName = "%s-%s-%s".formatted(method, serviceEntity.getCode(), type);
         var contentId = storageService.create("mocks", contentName, meta, content);
 
         httpMockEntity.setMethod(method);
