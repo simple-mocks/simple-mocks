@@ -16,6 +16,7 @@ import java.util.Map;
 @Getter
 @AllArgsConstructor
 public class MockDto implements Serializable {
+    private long serviceId;
     private long mockId;
     private String method;
     private String pathRegex;
@@ -24,6 +25,8 @@ public class MockDto implements Serializable {
     private String content;
 
     public MockDto(HttpMockEntity httpMockEntity, Content content) {
+        var service = httpMockEntity.getService();
+        this.serviceId = service.getId();
         this.mockId = httpMockEntity.getId();
         this.method = httpMockEntity.getMethod();
         this.pathRegex = httpMockEntity.getPathRegex();

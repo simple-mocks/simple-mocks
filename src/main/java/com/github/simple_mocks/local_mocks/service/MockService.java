@@ -47,7 +47,7 @@ public class MockService {
                                  String type,
                                  Map<String, String> meta,
                                  byte[] content) {
-        if(!mockTypes.contains(type)) {
+        if (!mockTypes.contains(type)) {
             throw new IllegalArgumentException("Type %s not supported".formatted(type));
         }
         try {
@@ -80,7 +80,7 @@ public class MockService {
                                  String type,
                                  Map<String, String> meta,
                                  byte[] content) {
-        if(!mockTypes.contains(type)) {
+        if (!mockTypes.contains(type)) {
             throw new IllegalArgumentException("Type %s not supported".formatted(type));
         }
         try {
@@ -122,7 +122,17 @@ public class MockService {
     public ServiceDto getService(long serviceId) {
         var serviceEntity = serviceEntityRepository.findById(serviceId)
                 .orElseThrow(() -> new IllegalArgumentException("Service %s not found".formatted(serviceId)));
-        List<HttpMockEntity> httpMockEntities = httpMockEntityRepository.findAllByServiceId(serviceId);
+        var httpMockEntities = httpMockEntityRepository.findAllByServiceId(serviceId);
         return new ServiceDto(serviceEntity, httpMockEntities);
+    }
+
+    public List<ServiceDto> getAllServices() {
+        return serviceEntityRepository.findAll()
+                .stream()
+                .map(it -> {
+                    var mocks = httpMockEntityRepository.findAllByServiceId(it.getId());
+                    return new ServiceDto(it, mocks);
+                })
+                .toList();
     }
 }

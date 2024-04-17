@@ -4,6 +4,7 @@ import com.github.simple_mocks.local_mocks.api.rq.CreateServiceRq;
 import com.github.simple_mocks.local_mocks.api.rq.GetServiceRq;
 import com.github.simple_mocks.local_mocks.api.rs.CreateServiceRs;
 import com.github.simple_mocks.local_mocks.api.rs.GetServiceRs;
+import com.github.simple_mocks.local_mocks.api.rs.GetServicesRs;
 import com.github.simple_mocks.local_mocks.service.MockService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,16 @@ public class ApiServiceController {
     }
 
     @PostMapping("/get")
-    public GetServiceRs create(@RequestBody GetServiceRq rq) {
+    public GetServiceRs get(@RequestBody GetServiceRq rq) {
         var serviceId = rq.getServiceId();
         var service = mockService.getService(serviceId);
         return new GetServiceRs(service);
+    }
+
+    @PostMapping("/getAll")
+    public GetServicesRs getAll() {
+        var services = mockService.getAllServices();
+        return new GetServicesRs(services);
     }
 
 }
