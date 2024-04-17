@@ -28,7 +28,7 @@ import java.util.Objects;
 @Configuration
 @EnableLocalStorageService
 @EnableLocalSessionService
-@EnableLocalErrorService("/config/mocks/errors")
+@EnableLocalErrorService("classpath:/config/mocks/errors/*.json")
 @EnableTransactionManagement
 @EnableJpaRepositories(
         basePackageClasses = {Application.class}
