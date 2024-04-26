@@ -5,7 +5,7 @@ plugins {
     id("maven-publish")
     id("java")
     id("jacoco")
-    id("org.springframework.boot") version "3.0.4"
+    id("org.springframework.boot") version "3.2.5"
     id("io.spring.dependency-management") version "1.1.0"
 }
 
@@ -56,6 +56,13 @@ dependencies {
         "com.github.simple-mocks",
         "service-storage-local",
         "${project.property("lib_service_storage_local_version")}"
+    )
+
+    implementation("com.github.simple-mocks", "api-async", "${project.property("lib_api_async_version")}")
+    implementation(
+        "com.github.simple-mocks",
+        "service-async-local",
+        "${project.property("lib_service_async_local_version")}"
     )
 
     implementation(project(path = ":common-api"))
