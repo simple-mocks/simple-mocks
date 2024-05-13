@@ -13,26 +13,20 @@ import java.io.Serializable;
  * @since 0.0.1
  */
 @Getter
-@AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class StandardRs<T extends Serializable> implements Serializable {
-    private final boolean success;
+public class StandardRs<T extends Serializable> extends StandardEmptyRs {
     private final T body;
-    private final ErrorDto error;
 
     public StandardRs() {
-        this(true, null, null);
+        this.body = null;
     }
 
-    public StandardRs(boolean success) {
-        this(success, null, null);
+    public StandardRs(T body) {
+        this.body = body;
     }
 
-    public StandardRs(boolean success, T body) {
-        this(success, body, null);
-    }
-
-    public StandardRs(boolean success, ErrorDto error) {
-        this(success, null, error);
+    public StandardRs(ErrorDto error) {
+        super(error);
+        this.body = null;
     }
 }

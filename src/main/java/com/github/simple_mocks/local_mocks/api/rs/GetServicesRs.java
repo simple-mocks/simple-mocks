@@ -12,6 +12,6 @@ import java.util.List;
  */
 public class GetServicesRs extends StandardRs<ArrayList<ServiceDto>> {
     public GetServicesRs(List<ServiceDto> serviceDto) {
-        super(true, new ArrayList<>(serviceDto));
+        super(new ArrayList<>(serviceDto));
     }
 }

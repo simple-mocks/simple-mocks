@@ -9,6 +9,6 @@ import com.github.simple_mocks.local_mocks.api.dto.ServiceDto;
  */
 public class GetServiceRs extends StandardRs<ServiceDto> {
     public GetServiceRs(ServiceDto serviceDto) {
-        super(true, serviceDto);
+        super(serviceDto);
     }
 }

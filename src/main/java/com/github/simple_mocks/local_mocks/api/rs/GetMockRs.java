@@ -9,6 +9,6 @@ import com.github.simple_mocks.local_mocks.api.dto.MockDto;
  */
 public class GetMockRs extends StandardRs<MockDto> {
     public GetMockRs(MockDto mockDto) {
-        super(true, mockDto);
+        super(mockDto);
     }
 }

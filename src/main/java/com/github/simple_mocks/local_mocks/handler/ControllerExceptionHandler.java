@@ -24,7 +24,7 @@ import java.util.Locale;
 @ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @Value("${app.error.system_code}")
-    private String systemCode;
+    private String appSystemCode;
     @Value("${app.error.default_code}")
     private String defaultCode;
 
@@ -48,7 +48,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(Exception.class)
     public @ResponseBody StandardRs<?> handleException(Exception e, HttpServletResponse response) {
         log.error("Exception happened", e);
-        return handleException(502, systemCode, defaultCode, response);
+        return handleException(502, appSystemCode, defaultCode, response);
     }
 
     private StandardRs<? extends Serializable> handleException(int statusCode,
@@ -64,7 +64,7 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
                     .title(description.getTitle())
                     .message(description.getMessage())
                     .build();
-            return new StandardRs<>(false, errorDto);
+            return new StandardRs<>(errorDto);
         } catch (Throwable t) {
             log.error("Error get error description", t);
             return getDefaultErrorRs(response);
@@ -78,10 +78,10 @@ public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
             log.error("Can't set response status", e);
         }
         var errorDto = ErrorDto.builder()
-                .system(systemCode)
+                .system(appSystemCode)
                 .code(defaultCode)
                 .build();
-        return new StandardRs<>(false, errorDto);
+        return new StandardRs<>(errorDto);
     }
 
 }

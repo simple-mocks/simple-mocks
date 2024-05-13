@@ -8,6 +8,6 @@ import com.github.simple_mocks.common.api.rs.StandardRs;
  */
 public class CreateServiceRs extends StandardRs<Long> {
     public CreateServiceRs(long id) {
-        super(true, id);
+        super(id);
     }
 }

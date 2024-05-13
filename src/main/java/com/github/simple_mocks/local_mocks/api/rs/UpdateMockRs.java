@@ -8,6 +8,6 @@ import com.github.simple_mocks.common.api.rs.StandardRs;
  */
 public class UpdateMockRs extends StandardRs<Long> {
     public UpdateMockRs(long id) {
-        super(true, id);
+        super(id);
     }
 }
