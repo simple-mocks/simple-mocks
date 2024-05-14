@@ -1,20 +1,16 @@
 package com.github.simple_mocks.local_mocks.controller;
 
 import com.github.simple_mocks.common.api.rs.StandardEmptyRs;
-import com.github.simple_mocks.local_mocks.api.kafka.rq.CreateKafkaProducerRq;
-import com.github.simple_mocks.local_mocks.api.kafka.rq.GetKafkaProducerRq;
-import com.github.simple_mocks.local_mocks.api.kafka.rq.SendKafkaProducerRq;
-import com.github.simple_mocks.local_mocks.api.kafka.rq.UpdateKafkaProducerRq;
+import com.github.simple_mocks.local_mocks.api.kafka.rq.*;
 import com.github.simple_mocks.local_mocks.api.kafka.rs.GetKafkaProducerRs;
+import com.github.simple_mocks.local_mocks.api.kafka.rs.GetKafkaProducersRs;
 import com.github.simple_mocks.local_mocks.api.kafka.rs.SendKafkaProducerRs;
+import com.github.simple_mocks.local_mocks.service.kafka.KafkaDaService;
 import com.github.simple_mocks.local_mocks.service.kafka.KafkaFacadeService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
@@ -23,16 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
         produces = MediaType.APPLICATION_JSON_VALUE)
 public class ApiKafkaController {
 
+    private final KafkaDaService kafkaDaService;
     private final KafkaFacadeService kafkaFacadeService;
 
     @Autowired
-    public ApiKafkaController(KafkaFacadeService kafkaFacadeService) {
+    public ApiKafkaController(KafkaDaService kafkaDaService,
+                              KafkaFacadeService kafkaFacadeService) {
+        this.kafkaDaService = kafkaDaService;
         this.kafkaFacadeService = kafkaFacadeService;
     }
 
     @PostMapping("/producer/create")
-    public StandardEmptyRs create(@RequestBody CreateKafkaProducerRq rq) {
-        kafkaFacadeService.createProducer(
+    public StandardEmptyRs createProducer(@RequestBody CreateKafkaProducerRq rq) {
+        kafkaDaService.createProducer(
                 rq.getCode(),
                 rq.getDescription(),
                 rq.getBootstrapServers(),
@@ -42,8 +41,8 @@ public class ApiKafkaController {
     }
 
     @PostMapping("/producer/update")
-    public StandardEmptyRs update(@RequestBody UpdateKafkaProducerRq rq) {
-        kafkaFacadeService.updateProducer(
+    public StandardEmptyRs updateProducer(@RequestBody UpdateKafkaProducerRq rq) {
+        kafkaDaService.updateProducer(
                 rq.getCode(),
                 rq.getDescription(),
                 rq.getBootstrapServers(),
@@ -52,12 +51,26 @@ public class ApiKafkaController {
         return new StandardEmptyRs();
     }
 
+    @PostMapping("/producer/delete")
+    public StandardEmptyRs deleteProducer(@RequestBody DeleteKafkaProducerRq rq) {
+        kafkaDaService.deleteProducer(
+                rq.getCode()
+        );
+        return new StandardEmptyRs();
+    }
+
     @PostMapping("/producer/get")
-    public GetKafkaProducerRs get(@RequestBody GetKafkaProducerRq rq) {
-        var dto = kafkaFacadeService.getProducer(
+    public GetKafkaProducerRs getProducer(@RequestBody GetKafkaProducerRq rq) {
+        var dto = kafkaDaService.getProducer(
                 rq.getCode()
         );
         return new GetKafkaProducerRs(dto);
+    }
+
+    @GetMapping("/producer/getAll")
+    public GetKafkaProducersRs getProducers() {
+        var dtos = kafkaDaService.getProducers();
+        return new GetKafkaProducersRs(dtos);
     }
 
     @PostMapping("/producer/send")

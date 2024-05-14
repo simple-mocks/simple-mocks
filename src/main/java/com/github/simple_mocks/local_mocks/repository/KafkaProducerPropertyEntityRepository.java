@@ -21,4 +21,10 @@ public interface KafkaProducerPropertyEntityRepository extends
      */
     List<KafkaProducerPropertyEntity> findAllById_Producer(String code);
 
+    /**
+     * Delete all properties for Kafka producer
+     *
+     * @param code kafka producer code
+     */
+    void deleteAllById_Producer(String code);
 }
