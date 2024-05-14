@@ -31,6 +31,14 @@ public class KafkaDaService {
         this.kafkaProducerPropertyEntityRepository = kafkaProducerPropertyEntityRepository;
     }
 
+    /**
+     * Create kafka producer
+     *
+     * @param code             kafka producer code
+     * @param description      kafka producer description
+     * @param bootstrapServers kafka bootstrap servers
+     * @param properties       kafka static properties
+     */
     @Transactional
     public void createProducer(String code,
                                String description,
@@ -68,6 +76,14 @@ public class KafkaDaService {
         kafkaProducerPropertyEntityRepository.saveAll(kafkaProducerPropertyEntities);
     }
 
+    /**
+     * Update existed kafka producer
+     *
+     * @param code             kafka producer code
+     * @param description      new kafka producer description
+     * @param bootstrapServers new kafka bootstrap servers
+     * @param properties       new kafka static properties
+     */
     @Transactional
     public void updateProducer(String code,
                                String description,
@@ -119,6 +135,12 @@ public class KafkaDaService {
         kafkaProducerPropertyEntityRepository.saveAll(newProperties);
     }
 
+    /**
+     * Get kafka producer information
+     *
+     * @param code kafka producer code
+     * @return producer information
+     */
     public KafkaProducerDto getProducer(String code) {
         var kafkaProducerEntity = kafkaProducerEntityRepository.findById(code)
                 .orElseThrow(
@@ -132,6 +154,11 @@ public class KafkaDaService {
 
     }
 
+    /**
+     * Get kafka producers short information
+     *
+     * @return list of kafka producers short information
+     */
     public List<KafkaProducerShortDto> getProducers() {
         return kafkaProducerEntityRepository.findAll()
                 .stream()
@@ -157,6 +184,11 @@ public class KafkaDaService {
                 .build();
     }
 
+    /**
+     * Delete existed kafka producer and his properties
+     *
+     * @param code kafka producer code
+     */
     @Transactional
     public void deleteProducer(String code) {
         kafkaProducerPropertyEntityRepository.deleteAllById_Producer(code);
