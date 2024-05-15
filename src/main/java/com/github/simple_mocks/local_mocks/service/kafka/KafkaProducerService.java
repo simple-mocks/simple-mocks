@@ -16,11 +16,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 @Service
-public class KafkaFacadeService {
-    private final KafkaDaService kafkaDaService;
+public class KafkaProducerService {
+    private final KafkaProducerDaService kafkaProducerDaService;
 
-    public KafkaFacadeService(KafkaDaService kafkaDaService) {
-        this.kafkaDaService = kafkaDaService;
+    public KafkaProducerService(KafkaProducerDaService kafkaProducerDaService) {
+        this.kafkaProducerDaService = kafkaProducerDaService;
     }
 
     /**
@@ -72,7 +72,7 @@ public class KafkaFacadeService {
                            byte[] key,
                            byte[] value,
                            Map<String, byte[]> headers) {
-        var kafkaProducerDto = kafkaDaService.getProducer(code);
+        var kafkaProducerDto = kafkaProducerDaService.getProducer(code);
         var properties = getProperties(kafkaProducerDto, additionalProperties);
 
         var recordHeaders = new RecordHeaders();

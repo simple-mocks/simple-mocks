@@ -21,12 +21,12 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
-public class KafkaDaService {
+public class KafkaProducerDaService {
     private final KafkaProducerEntityRepository kafkaProducerEntityRepository;
     private final KafkaProducerPropertyEntityRepository kafkaProducerPropertyEntityRepository;
 
-    public KafkaDaService(KafkaProducerEntityRepository kafkaProducerEntityRepository,
-                          KafkaProducerPropertyEntityRepository kafkaProducerPropertyEntityRepository) {
+    public KafkaProducerDaService(KafkaProducerEntityRepository kafkaProducerEntityRepository,
+                                  KafkaProducerPropertyEntityRepository kafkaProducerPropertyEntityRepository) {
         this.kafkaProducerEntityRepository = kafkaProducerEntityRepository;
         this.kafkaProducerPropertyEntityRepository = kafkaProducerPropertyEntityRepository;
     }
