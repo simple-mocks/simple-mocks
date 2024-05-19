@@ -32,6 +32,8 @@ dependencies {
     implementation("org.springframework.boot", "spring-boot-starter-thymeleaf")
     implementation("org.springframework.boot", "spring-boot-starter-web")
 
+    implementation("org.springdoc", "springdoc-openapi-starter-webmvc-ui", "${project.property("lib_springdoc_version")}")
+
     implementation("org.flywaydb", "flyway-core", "${project.property("lib_flyway_core_version")}")
 
     implementation("org.xerial", "sqlite-jdbc")
